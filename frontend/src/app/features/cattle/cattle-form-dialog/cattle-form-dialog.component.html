@@ -1,0 +1,78 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier' : 'Ajouter' }} un bovin</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="form" class="cattle-form">
+
+        <div class="form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>Numéro d'oreille</mat-label>
+                <input matInput formControlName="ear_tag" required>
+                <mat-error *ngIf="form.get('ear_tag')?.hasError('required')">Requis</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Nom</mat-label>
+                <input matInput formControlName="name">
+            </mat-form-field>
+        </div>
+
+        <div class="form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>Race</mat-label>
+                <input matInput formControlName="breed">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Sexe</mat-label>
+                <mat-select formControlName="sex" required>
+                    <mat-option value="female">Femelle</mat-option>
+                    <mat-option value="male">Mâle</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form-row">
+            <mat-form-field appearance="outline">
+                <mat-label>Date de naissance</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="birth_date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Poids (kg)</mat-label>
+                <input matInput type="number" formControlName="weight">
+            </mat-form-field>
+        </div>
+
+        <div class="form-row" *ngIf="isEditMode">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Statut</mat-label>
+                <mat-select formControlName="status">
+                    <mat-option value="active">Actif</mat-option>
+                    <mat-option value="sold">Vendu</mat-option>
+                    <mat-option value="deceased">Décédé</mat-option>
+                    <mat-option value="culled">Réformé</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Notes</mat-label>
+            <textarea matInput formControlName="notes" rows="3"></textarea>
+        </mat-form-field>
+
+        <mat-error *ngIf="error" class="form-error">
+            {{ error }}
+        </mat-error>
+
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Annuler</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || loading">
+        <span *ngIf="!loading">Enregistrer</span>
+        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+    </button>
+</mat-dialog-actions>

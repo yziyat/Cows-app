@@ -38,6 +38,14 @@ import { LoginComponent } from './features/auth/login/login.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { CattleListComponent } from './features/cattle/cattle-list/cattle-list.component';
 import { MainLayoutComponent } from './shared/components/main-layout/main-layout.component';
+import { CattleFormDialogComponent } from './features/cattle/cattle-form-dialog/cattle-form-dialog.component';
+import { CattleDetailComponent } from './features/cattle/cattle-detail/cattle-detail.component';
+import { ProtocolListComponent } from './features/protocols/protocol-list/protocol-list.component';
+import { ProtocolFormDialogComponent } from './features/protocols/protocol-form-dialog/protocol-form-dialog.component';
+import { CycleListComponent } from './features/cycles/cycle-list/cycle-list.component';
+import { CycleFormDialogComponent } from './features/cycles/cycle-form-dialog/cycle-form-dialog.component';
+import { InseminationListComponent } from './features/inseminations/insemination-list/insemination-list.component';
+import { InseminationFormDialogComponent } from './features/inseminations/insemination-form-dialog/insemination-form-dialog.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +53,15 @@ import { MainLayoutComponent } from './shared/components/main-layout/main-layout
     LoginComponent,
     DashboardComponent,
     CattleListComponent,
-    MainLayoutComponent
+    MainLayoutComponent,
+    CattleFormDialogComponent,
+    CattleDetailComponent,
+    ProtocolListComponent,
+    ProtocolFormDialogComponent,
+    CycleListComponent,
+    CycleFormDialogComponent,
+    InseminationListComponent,
+    InseminationFormDialogComponent
   ],
   imports: [
     BrowserModule,

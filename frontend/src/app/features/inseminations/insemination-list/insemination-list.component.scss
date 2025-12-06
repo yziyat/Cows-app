@@ -1,0 +1,42 @@
+.insemination-list-container {
+    padding: 24px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    h1 {
+        margin: 0;
+    }
+}
+
+table {
+    width: 100%;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.8rem;
+    background-color: #eee;
+    color: #666;
+
+    &.success {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    &.failed {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+}
+
+.loading-overlay {
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+}

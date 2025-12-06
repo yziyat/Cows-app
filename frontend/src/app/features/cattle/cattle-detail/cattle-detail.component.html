@@ -1,0 +1,85 @@
+<div class="cattle-detail-container">
+    <div class="loading-overlay" *ngIf="loading">
+        <mat-spinner></mat-spinner>
+    </div>
+
+    <div class="error-state" *ngIf="error && !loading">
+        <mat-icon color="warn">error</mat-icon>
+        <p>{{ error }}</p>
+        <button mat-raised-button color="primary" (click)="goBack()">Retour</button>
+    </div>
+
+    <ng-container *ngIf="cattle && !loading">
+        <div class="header">
+            <button mat-icon-button (click)="goBack()">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <h1>Détails du bovin : {{ cattle.ear_tag }}</h1>
+            <span class="status-badge" [ngClass]="cattle.status">{{ cattle.status }}</span>
+        </div>
+
+        <div class="content-grid">
+            <!-- Maint Info Card -->
+            <mat-card class="detail-card">
+                <mat-card-header>
+                    <mat-card-title>Informations Générales</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="info-row">
+                        <span class="label">Nom:</span>
+                        <span class="value">{{ cattle.name || '-' }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Race:</span>
+                        <span class="value">{{ cattle.breed || '-' }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Sexe:</span>
+                        <span class="value">{{ cattle.sex === 'female' ? 'Femelle' : 'Mâle' }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Date de naissance:</span>
+                        <span class="value">{{ cattle.birth_date | date:'dd/MM/yyyy' }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Poids:</span>
+                        <span class="value">{{ cattle.weight ? cattle.weight + ' kg' : '-' }}</span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Genealogy Card -->
+            <mat-card class="detail-card">
+                <mat-card-header>
+                    <mat-card-title>Généalogie</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="info-row">
+                        <span class="label">Mère:</span>
+                        <span class="value" *ngIf="cattle.mother_id">
+                            <a [routerLink]="['/cattle', cattle.mother_id]">Voir Mère</a>
+                        </span>
+                        <span class="value" *ngIf="!cattle.mother_id">-</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Père:</span>
+                        <span class="value" *ngIf="cattle.father_id">
+                            <a [routerLink]="['/cattle', cattle.father_id]">Voir Père</a>
+                        </span>
+                        <span class="value" *ngIf="!cattle.father_id">-</span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+            <!-- Notes Card -->
+            <mat-card class="detail-card full-width">
+                <mat-card-header>
+                    <mat-card-title>Notes</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>{{ cattle.notes || 'Aucune note disponible.' }}</p>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </ng-container>
+</div>

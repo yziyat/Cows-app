@@ -4,11 +4,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { CattleService } from '../../../core/services/cattle.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { Cattle } from '../../../models/cattle.model';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { CattleFormDialogComponent } from '../cattle-form-dialog/cattle-form-dialog.component';
 
 @Component({
   selector: 'app-cattle-list',
@@ -29,7 +31,8 @@ export class CattleListComponent implements OnInit {
   constructor(
     private cattleService: CattleService,
     public authService: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {
     this.dataSource = new MatTableDataSource<Cattle>();
   }
@@ -53,7 +56,7 @@ export class CattleListComponent implements OnInit {
 
   loadCattle(): void {
     this.loading = true;
-    
+
     const params: any = {};
     if (this.statusFilter.value) params.status = this.statusFilter.value;
     if (this.sexFilter.value) params.sex = this.sexFilter.value;
@@ -64,7 +67,7 @@ export class CattleListComponent implements OnInit {
       next: (response) => {
         this.dataSource.data = response.cattle;
         this.loading = false;
-        
+
         setTimeout(() => {
           this.dataSource.paginator = this.paginator;
           this.dataSource.sort = this.sort;
@@ -86,13 +89,29 @@ export class CattleListComponent implements OnInit {
   }
 
   openCreateDialog(): void {
-    // TODO: Ouvrir dialogue de création
-    console.log('Open create dialog');
+    const dialogRef = this.dialog.open(CattleFormDialogComponent, {
+      width: '600px',
+      data: { cattle: null }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadCattle();
+      }
+    });
   }
 
   editCattle(cattle: Cattle): void {
-    // TODO: Ouvrir dialogue d'édition
-    console.log('Edit cattle:', cattle);
+    const dialogRef = this.dialog.open(CattleFormDialogComponent, {
+      width: '600px',
+      data: { cattle }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.loadCattle();
+      }
+    });
   }
 
   deleteCattle(cattle: Cattle): void {
@@ -110,7 +129,6 @@ export class CattleListComponent implements OnInit {
   }
 
   viewDetails(cattle: Cattle): void {
-    // TODO: Navigation vers détails
-    console.log('View details:', cattle);
+    this.router.navigate(['/cattle', cattle.id]);
   }
 }

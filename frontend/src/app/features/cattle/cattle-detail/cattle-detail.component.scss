@@ -1,0 +1,90 @@
+.cattle-detail-container {
+    padding: 24px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+
+    h1 {
+        margin: 0;
+    }
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.detail-card {
+    height: 100%;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+
+    &:last-child {
+        border-bottom: none;
+    }
+
+    .label {
+        font-weight: 500;
+        color: #666;
+    }
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: capitalize;
+
+    &.active {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    &.sold {
+        background-color: #e3f2fd;
+        color: #1565c0;
+    }
+
+    &.deceased {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+
+    &.culled {
+        background-color: #fff3e0;
+        color: #ef6c00;
+    }
+}
+
+.loading-overlay {
+    display: flex;
+    justify-content: center;
+    padding: 48px;
+}
+
+.error-state {
+    text-align: center;
+    padding: 48px;
+
+    mat-icon {
+        font-size: 48px;
+        height: 48px;
+        width: 48px;
+        margin-bottom: 16px;
+    }
+}

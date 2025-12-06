@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier' : 'Nouveau' }} Cycle</h2>
+
+<mat-dialog-content class="dialog-content">
+    <form [formGroup]="form">
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Protocole</mat-label>
+            <mat-select formControlName="protocol_id" required>
+                <mat-option *ngFor="let p of protocols" [value]="p.id">
+                    {{ p.name }} ({{ p.duration_days }} jours)
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Date de début</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="start_date" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width" *ngIf="isEditMode">
+            <mat-label>Statut</mat-label>
+            <mat-select formControlName="status" required>
+                <mat-option value="active">Actif</mat-option>
+                <mat-option value="completed">Terminé</mat-option>
+                <mat-option value="cancelled">Annulé</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-error *ngIf="error">{{ error }}</mat-error>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Annuler</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || loading">
+        <span *ngIf="!loading">Enregistrer</span>
+        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+    </button>
+</mat-dialog-actions>

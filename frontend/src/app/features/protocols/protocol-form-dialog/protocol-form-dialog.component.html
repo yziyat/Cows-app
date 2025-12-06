@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier' : 'Nouveau' }} Protocol</h2>
+
+<mat-dialog-content class="dialog-content">
+    <form [formGroup]="form">
+        <div class="main-info">
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Nom du protocole</mat-label>
+                <input matInput formControlName="name" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Description</mat-label>
+                <textarea matInput formControlName="description" rows="2"></textarea>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Durée totale (jours)</mat-label>
+                <input matInput type="number" formControlName="duration_days" required>
+            </mat-form-field>
+        </div>
+
+        <h3>Étapes</h3>
+        <div formArrayName="steps" class="steps-container">
+            <div *ngFor="let step of steps.controls; let i=index" [formGroupName]="i" class="step-card">
+                <div class="step-header">
+                    <h4>Étape {{i + 1}}</h4>
+                    <button mat-icon-button color="warn" (click)="removeStep(i)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+
+                <div class="step-fields">
+                    <mat-form-field appearance="outline" class="small-field">
+                        <mat-label>Jour</mat-label>
+                        <input matInput type="number" formControlName="day_number" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Action</mat-label>
+                        <input matInput formControlName="action" required placeholder="Ex: Injection GnRH">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Produit</mat-label>
+                        <input matInput formControlName="product">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Dosage</mat-label>
+                        <input matInput formControlName="dosage">
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+        <button mat-stroked-button color="primary" type="button" (click)="addStep()" class="add-step-btn">
+            <mat-icon>add</mat-icon> Ajouter une étape
+        </button>
+
+        <mat-error *ngIf="error" class="error-msg">{{ error }}</mat-error>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Annuler</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || loading">
+        <span *ngIf="!loading">Enregistrer</span>
+        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+    </button>
+</mat-dialog-actions>

@@ -4,6 +4,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/login/login.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { CattleListComponent } from './features/cattle/cattle-list/cattle-list.component';
+import { CattleDetailComponent } from './features/cattle/cattle-detail/cattle-detail.component';
+import { ProtocolListComponent } from './features/protocols/protocol-list/protocol-list.component';
+import { CycleListComponent } from './features/cycles/cycle-list/cycle-list.component';
+import { InseminationListComponent } from './features/inseminations/insemination-list/insemination-list.component';
 import { MainLayoutComponent } from './shared/components/main-layout/main-layout.component';
 import { AuthGuard } from './core/guards/auth.guard';
 
@@ -24,6 +28,22 @@ const routes: Routes = [
       {
         path: 'cattle',
         component: CattleListComponent
+      },
+      {
+        path: 'cattle/:id',
+        component: CattleDetailComponent
+      },
+      {
+        path: 'protocols',
+        component: ProtocolListComponent
+      },
+      {
+        path: 'cycles',
+        component: CycleListComponent
+      },
+      {
+        path: 'inseminations',
+        component: InseminationListComponent
       },
       {
         path: '',

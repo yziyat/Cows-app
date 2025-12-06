@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>{{ isEditMode ? 'Modifier' : 'Nouvelle' }} Insémination</h2>
+
+<mat-dialog-content class="dialog-content">
+    <form [formGroup]="form">
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Vache</mat-label>
+            <mat-select formControlName="cattle_id" required>
+                <mat-option *ngFor="let c of cattleList" [value]="c.id">
+                    {{ c.ear_tag }} - {{ c.name }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Taureau / Code Semence</mat-label>
+            <input matInput formControlName="bull_id">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Technicien</mat-label>
+            <input matInput formControlName="technician_name">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width" *ngIf="isEditMode">
+            <mat-label>Résultat</mat-label>
+            <mat-select formControlName="success">
+                <mat-option [value]="null">En attente</mat-option>
+                <mat-option [value]="true">Réussie</mat-option>
+                <mat-option [value]="false">Échouée</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-error *ngIf="error">{{ error }}</mat-error>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Annuler</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || loading">
+        <span *ngIf="!loading">Enregistrer</span>
+        <mat-spinner *ngIf="loading" diameter="20"></mat-spinner>
+    </button>
+</mat-dialog-actions>
