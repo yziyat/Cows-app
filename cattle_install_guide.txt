@@ -1,0 +1,148 @@
+# Système de Suivi de Reproduction Bovine
+
+## 📋 Prérequis
+
+Installez les outils suivants sur votre machine :
+
+1. **Node.js** (version 18+) : https://nodejs.org/
+2. **Angular CLI** : `npm install -g @angular/cli`
+3. **PostgreSQL** (version 14+) : https://www.postgresql.org/download/
+
+## 🏗️ Structure du Projet
+
+```
+cattle-management/
+├── frontend/                 # Application Angular
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── core/        # Services, guards, interceptors
+│   │   │   ├── shared/      # Composants réutilisables
+│   │   │   ├── features/    # Modules fonctionnels
+│   │   │   │   ├── auth/
+│   │   │   │   ├── cattle/
+│   │   │   │   ├── protocols/
+│   │   │   │   └── dashboard/
+│   │   │   └── models/      # Interfaces TypeScript
+│   │   └── environments/
+│   └── angular.json
+│
+└── backend/                  # API Node.js/Express
+    ├── src/
+    │   ├── config/          # Configuration DB, JWT
+    │   ├── controllers/     # Logique métier
+    │   ├── models/          # Modèles de données
+    │   ├── routes/          # Routes API
+    │   ├── middleware/      # Auth, validation
+    │   └── server.js
+    └── package.json
+```
+
+## 🚀 Installation
+
+### Étape 1 : Base de données PostgreSQL
+
+```bash
+# Se connecter à PostgreSQL
+psql -U postgres
+
+# Créer la base de données
+CREATE DATABASE cattle_management;
+
+# Créer un utilisateur
+CREATE USER cattle_admin WITH PASSWORD 'votre_mot_de_passe';
+
+# Donner les droits
+GRANT ALL PRIVILEGES ON DATABASE cattle_management TO cattle_admin;
+```
+
+### Étape 2 : Backend
+
+```bash
+# Créer le dossier backend
+mkdir cattle-management
+cd cattle-management
+mkdir backend
+cd backend
+
+# Initialiser le projet Node.js
+npm init -y
+
+# Installer les dépendances
+npm install express pg cors dotenv bcryptjs jsonwebtoken
+npm install --save-dev nodemon
+
+# Créer la structure
+mkdir -p src/{config,controllers,models,routes,middleware}
+```
+
+### Étape 3 : Frontend Angular
+
+```bash
+# Retour au dossier racine
+cd ..
+
+# Créer l'application Angular
+ng new frontend --routing --style=scss
+
+cd frontend
+
+# Installer Angular Material
+ng add @angular/material
+
+# Installer les dépendances supplémentaires
+npm install @angular/flex-layout rxjs
+```
+
+## 📝 Configuration
+
+### Backend - Fichier `.env`
+
+Créer un fichier `.env` dans le dossier `backend/` :
+
+```env
+PORT=3000
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=cattle_management
+DB_USER=cattle_admin
+DB_PASSWORD=votre_mot_de_passe
+JWT_SECRET=votre_secret_jwt_tres_securise
+JWT_EXPIRE=24h
+NODE_ENV=development
+```
+
+### Frontend - Environment
+
+Modifier `frontend/src/environments/environment.ts` :
+
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000/api'
+};
+```
+
+## ▶️ Démarrage
+
+### Terminal 1 - Backend
+```bash
+cd backend
+npm run dev
+```
+
+### Terminal 2 - Frontend
+```bash
+cd frontend
+ng serve
+```
+
+L'application sera accessible sur : http://localhost:4200
+
+## 📦 Prochaines étapes
+
+Je vais maintenant vous fournir :
+1. Le schéma de la base de données SQL
+2. Le code du backend (API)
+3. Le code du frontend Angular (composants, services, etc.)
+
+Êtes-vous prêt pour la suite ?

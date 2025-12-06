@@ -1,0 +1,86 @@
+<!-- src/app/features/dashboard/dashboard.component.html -->
+<div class="dashboard-container">
+  <div class="header">
+    <h1>Tableau de bord</h1>
+    <p *ngIf="currentUser">
+      Bienvenue, {{ currentUser.first_name || currentUser.username }} 
+      <span class="role-badge">{{ currentUser.role }}</span>
+    </p>
+  </div>
+
+  <div class="stats-grid" *ngIf="!loading && stats">
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon" style="background-color: #4caf50;">
+          <mat-icon>pets</mat-icon>
+        </div>
+        <div class="stat-info">
+          <div class="stat-value">{{ stats.total_cattle }}</div>
+          <div class="stat-label">Bovins actifs</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon" style="background-color: #2196f3;">
+          <mat-icon>schedule</mat-icon>
+        </div>
+        <div class="stat-info">
+          <div class="stat-value">{{ stats.active_cycles }}</div>
+          <div class="stat-label">Cycles actifs</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon" style="background-color: #ff9800;">
+          <mat-icon>pending</mat-icon>
+        </div>
+        <div class="stat-info">
+          <div class="stat-value">{{ stats.pending_inseminations }}</div>
+          <div class="stat-label">IA en attente</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-card-content>
+        <div class="stat-icon" style="background-color: #9c27b0;">
+          <mat-icon>child_care</mat-icon>
+        </div>
+        <div class="stat-info">
+          <div class="stat-value">{{ stats.pregnant_cattle }}</div>
+          <div class="stat-label">Vaches gestantes</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="quick-actions">
+    <h2>Actions rapides</h2>
+    <div class="actions-grid">
+      <button mat-raised-button color="primary" routerLink="/cattle">
+        <mat-icon>pets</mat-icon>
+        Gérer les bovins
+      </button>
+      <button mat-raised-button color="primary" routerLink="/cycles">
+        <mat-icon>sync</mat-icon>
+        Cycles de synchronisation
+      </button>
+      <button mat-raised-button color="primary" routerLink="/inseminations">
+        <mat-icon>science</mat-icon>
+        Inséminations
+      </button>
+      <button mat-raised-button color="primary" routerLink="/protocols">
+        <mat-icon>list</mat-icon>
+        Protocoles
+      </button>
+    </div>
+  </div>
+</div>

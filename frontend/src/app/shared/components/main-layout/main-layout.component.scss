@@ -1,0 +1,101 @@
+// src/app/shared/components/main-layout/main-layout.component.scss
+.sidenav-container {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+
+  .sidenav-header {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  mat-nav-list {
+    flex: 1;
+    padding-top: 16px;
+
+    a {
+      margin: 4px 8px;
+      border-radius: 8px;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+
+      &.active-link {
+        background-color: rgba(63, 81, 181, 0.1);
+        color: #3f51b5;
+
+        mat-icon {
+          color: #3f51b5;
+        }
+      }
+    }
+  }
+
+  .sidenav-footer {
+    margin-top: auto;
+    padding: 16px;
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background-color: rgba(0, 0, 0, 0.02);
+      border-radius: 8px;
+      margin-top: 16px;
+
+      mat-icon {
+        font-size: 40px;
+        width: 40px;
+        height: 40px;
+        color: #666;
+      }
+
+      .user-details {
+        flex: 1;
+
+        .user-name {
+          font-weight: 500;
+          font-size: 14px;
+          color: #333;
+        }
+
+        .user-role {
+          font-size: 12px;
+          color: #666;
+          text-transform: capitalize;
+        }
+      }
+    }
+  }
+}
+
+.main-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 64px;
+
+  .toolbar-spacer {
+    flex: 1 1 auto;
+  }
+}
+
+.main-content {
+  min-height: calc(100vh - 64px);
+  background-color: #f5f5f5;
+}
+
+@media (max-width: 768px) {
+  .sidenav {
+    width: 100%;
+  }
+}

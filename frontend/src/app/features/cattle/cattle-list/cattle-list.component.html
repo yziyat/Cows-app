@@ -1,0 +1,129 @@
+<!-- src/app/features/cattle/cattle-list/cattle-list.component.html -->
+<div class="cattle-list-container">
+  <div class="header">
+    <h1>Gestion des Bovins</h1>
+    <button mat-raised-button 
+            color="primary" 
+            *ngIf="canEdit()"
+            (click)="openCreateDialog()">
+      <mat-icon>add</mat-icon>
+      Ajouter un bovin
+    </button>
+  </div>
+
+  <mat-card class="filters-card">
+    <mat-card-content>
+      <div class="filters-container">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Rechercher</mat-label>
+          <input matInput [formControl]="searchControl" placeholder="Numéro d'oreille ou nom">
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Statut</mat-label>
+          <mat-select [formControl]="statusFilter">
+            <mat-option value="">Tous</mat-option>
+            <mat-option value="active">Actif</mat-option>
+            <mat-option value="sold">Vendu</mat-option>
+            <mat-option value="deceased">Décédé</mat-option>
+            <mat-option value="culled">Réformé</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Sexe</mat-label>
+          <mat-select [formControl]="sexFilter">
+            <mat-option value="">Tous</mat-option>
+            <mat-option value="female">Femelle</mat-option>
+            <mat-option value="male">Mâle</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="table-card">
+    <div class="loading-overlay" *ngIf="loading">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort class="cattle-table">
+      <ng-container matColumnDef="ear_tag">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Numéro d'oreille</th>
+        <td mat-cell *matCellDef="let cattle">{{ cattle.ear_tag }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
+        <td mat-cell *matCellDef="let cattle">{{ cattle.name || '-' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="breed">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Race</th>
+        <td mat-cell *matCellDef="let cattle">{{ cattle.breed || '-' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="sex">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Sexe</th>
+        <td mat-cell *matCellDef="let cattle">
+          <span class="sex-badge" [class.female]="cattle.sex === 'female'" [class.male]="cattle.sex === 'male'">
+            {{ cattle.sex === 'female' ? 'Femelle' : 'Mâle' }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="birth_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date de naissance</th>
+        <td mat-cell *matCellDef="let cattle">
+          {{ cattle.birth_date ? (cattle.birth_date | date:'dd/MM/yyyy') : '-' }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Statut</th>
+        <td mat-cell *matCellDef="let cattle">
+          <span class="status-badge" [ngClass]="cattle.status">
+            {{ cattle.status }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let cattle">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="viewDetails(cattle)">
+              <mat-icon>visibility</mat-icon>
+              <span>Voir détails</span>
+            </button>
+            <button mat-menu-item *ngIf="canEdit()" (click)="editCattle(cattle)">
+              <mat-icon>edit</mat-icon>
+              <span>Modifier</span>
+            </button>
+            <button mat-menu-item *ngIf="canDelete()" (click)="deleteCattle(cattle)">
+              <mat-icon>delete</mat-icon>
+              <span>Supprimer</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+          Aucun bovin trouvé
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" 
+                   showFirstLastButtons>
+    </mat-paginator>
+  </mat-card>
+</div>
