@@ -1,19 +1,29 @@
 // src/app/core/services/auth.service.ts
 import { Injectable } from '@angular/core';
 import { Auth, signInWithEmailAndPassword, signOut, user, User as FirebaseUser } from '@angular/fire/auth';
-import { Observable, map, from, of } from 'rxjs';
+import { Observable, map, from, of, BehaviorSubject, switchMap } from 'rxjs';
 import { User, LoginRequest } from '../../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private currentUserSubject: BehaviorSubject<User | null>;
   public currentUser: Observable<User | null>;
 
   constructor(private auth: Auth) {
-    this.currentUser = user(this.auth).pipe(
-      map(firebaseUser => this.mapFirebaseUserToLocalUser(firebaseUser))
-    );
+    this.currentUserSubject = new BehaviorSubject<User | null>(null);
+    this.currentUser = this.currentUserSubject.asObservable();
+
+    // Subscribe to Firebase Auth state
+    user(this.auth).subscribe(firebaseUser => {
+      const localUser = this.mapFirebaseUserToLocalUser(firebaseUser);
+      this.currentUserSubject.next(localUser);
+    });
+  }
+
+  public get currentUserValue(): User | null {
+    return this.currentUserSubject.value;
   }
 
   // Helper to map Firebase User to our App User model
