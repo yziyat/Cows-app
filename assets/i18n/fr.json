@@ -1,0 +1,26 @@
+{
+    "MENU": {
+        "DASHBOARD": "Tableau de bord",
+        "CATTLE": "Bovins",
+        "CYCLES": "Cycles de synchro",
+        "INSEMINATIONS": "Inséminations",
+        "PROTOCOLS": "Protocoles",
+        "USERS": "Utilisateurs",
+        "LOGOUT": "Déconnexion"
+    },
+    "CATTLE": {
+        "TITLE": "Gestion des Bovins",
+        "ADD": "Ajouter un bovin",
+        "IMPORT": "Importer Excel",
+        "SEARCH": "Rechercher",
+        "STATUS": "Statut",
+        "SEX": "Sexe"
+    },
+    "COMMON": {
+        "CANCEL": "Annuler",
+        "SAVE": "Enregistrer",
+        "DELETE": "Supprimer",
+        "EDIT": "Modifier",
+        "ACTIONS": "Actions"
+    }
+}

@@ -1,0 +1,26 @@
+{
+    "MENU": {
+        "DASHBOARD": "Dashboard",
+        "CATTLE": "Cattle",
+        "CYCLES": "Cycles",
+        "INSEMINATIONS": "Inseminations",
+        "PROTOCOLS": "Protocols",
+        "USERS": "Users",
+        "LOGOUT": "Logout"
+    },
+    "CATTLE": {
+        "TITLE": "Cattle Management",
+        "ADD": "Add Cattle",
+        "IMPORT": "Import Excel",
+        "SEARCH": "Search",
+        "STATUS": "Status",
+        "SEX": "Sex"
+    },
+    "COMMON": {
+        "CANCEL": "Cancel",
+        "SAVE": "Save",
+        "DELETE": "Delete",
+        "EDIT": "Edit",
+        "ACTIONS": "Actions"
+    }
+}
