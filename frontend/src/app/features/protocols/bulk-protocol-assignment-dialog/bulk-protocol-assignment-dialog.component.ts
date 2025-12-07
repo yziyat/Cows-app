@@ -27,7 +27,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
             <mat-icon>upload_file</mat-icon>
             Sélectionner fichier Excel
           </button>
-          <span class="file-name" *ngIf="selectedFile">{{ selectedFile.name }}</span>
+          <span class="file-name" *ngIf="selectedFile">{{ selectedFile?.name }}</span>
         </div>
 
         <div *ngIf="previewCount !== null" class="preview-info">

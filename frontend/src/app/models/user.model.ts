@@ -1,10 +1,14 @@
 
 export interface User {
     id?: string;
-    username: string;
+    uid?: string;
+    username?: string;
     email: string;
+    displayName?: string;
     role: 'admin' | 'user' | 'viewer';
+    photoURL?: string;
     created_at?: Date;
+    updated_at?: Date;
 }
 
 export interface LoginRequest {

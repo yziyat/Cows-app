@@ -32,9 +32,26 @@ export class ExcelService {
                 }
             };
 
+
             reader.onerror = (error) => {
                 reject(error);
             };
+
+            reader.readAsBinaryString(file);
+        });
+    }
+
+    private mapDataToCattle(data: any[]): Partial<Cattle>[] {
+        return data.map(row => {
+            const cattle: Partial<Cattle> = {
+                ear_tag: String(row['ID'] || ''),
+                created_at: new Date()
+            };
+
+            // Basic fields
+            if (row['PEN']) cattle.pen = String(row['PEN']);
+            if (row['EID']) cattle.electronic_id = String(row['EID']);
+            if (row['BDAT']) cattle.birth_date = this.parseDate(row['BDAT']);
             if (row['GENDR']) cattle.sex = String(row['GENDR']).toLowerCase().startsWith('m') ? 'male' : 'female';
             if (row['AGEDS']) cattle.age_days = Number(row['AGEDS']);
             if (row['CBRD']) cattle.breed_code = String(row['CBRD']);
