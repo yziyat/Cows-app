@@ -11,6 +11,7 @@ import { Cattle } from '../../../models/cattle.model';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { CattleFormDialogComponent } from '../cattle-form-dialog/cattle-form-dialog.component';
+import { ExcelService } from '../../../services/excel.service';
 
 @Component({
   selector: 'app-cattle-list',
@@ -18,7 +19,8 @@ import { CattleFormDialogComponent } from '../cattle-form-dialog/cattle-form-dia
   styleUrls: ['./cattle-list.component.scss']
 })
 export class CattleListComponent implements OnInit {
-  displayedColumns: string[] = ['ear_tag', 'name', 'breed', 'sex', 'birth_date', 'status', 'actions'];
+
+  displayedColumns: string[] = ['ear_tag', 'electronic_id', 'pen', 'breed', 'sex', 'birth_date', 'status', 'repro_status', 'lactation_number', 'days_in_milk', 'actions'];
   dataSource: MatTableDataSource<Cattle>;
   loading = true;
   searchControl = new FormControl('');
@@ -30,11 +32,32 @@ export class CattleListComponent implements OnInit {
 
   constructor(
     private cattleService: CattleService,
+    private excelService: ExcelService,
     public authService: AuthService,
     private dialog: MatDialog,
     private router: Router
   ) {
     this.dataSource = new MatTableDataSource<Cattle>();
+  }
+
+  async onFileSelected(event: any): Promise<void> {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.loading = true;
+      try {
+        const cattleList = await this.excelService.readCattleFile(file);
+        await this.cattleService.batchUpsertCattle(cattleList);
+        this.loadCattle(); // Reload list
+        alert('Import réussi !');
+      } catch (error) {
+        console.error('Import failed', error);
+        alert('Erreur lors de l\'import');
+      } finally {
+        this.loading = false;
+        // Reset file input
+        event.target.value = '';
+      }
+    }
   }
 
   ngOnInit(): void {

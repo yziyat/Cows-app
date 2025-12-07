@@ -1,5 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Global Snackbar Styles */
+.mat-mdc-snack-bar-container {
+    &.center-top-snack {
+        margin-top: 20px !important;
+    }
+}
+
+/* Ensure global centering for the overlay pane if needed, 
+   though MatSnackBarConfig verticalPosition: 'top', horizontalPosition: 'center' 
+   should do most of the work. We just add this file for any custom overrides. */

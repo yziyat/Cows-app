@@ -1,14 +1,16 @@
 <!-- src/app/features/dashboard/dashboard.component.html -->
 <div class="dashboard-container">
   <div class="header">
-    <h1>Tableau de bord</h1>
+    <h1>{{ 'DASHBOARD.TITLE' | translate }}</h1>
     <p *ngIf="currentUser">
-      Bienvenue, {{ currentUser.first_name || currentUser.username }} 
+      Welcome, {{ currentUser.first_name || currentUser.username }} 
       <span class="role-badge">{{ currentUser.role }}</span>
     </p>
   </div>
 
+  <!-- Stats Grid -->
   <div class="stats-grid" *ngIf="!loading && stats">
+    <!-- Active Cows -->
     <mat-card class="stat-card">
       <mat-card-content>
         <div class="stat-icon" style="background-color: #4caf50;">
@@ -16,35 +18,29 @@
         </div>
         <div class="stat-info">
           <div class="stat-value">{{ stats.total_cattle }}</div>
-          <div class="stat-label">Bovins actifs</div>
+          <div class="stat-label">{{ 'DASHBOARD.ACTIVE_COWS' | translate }}</div>
         </div>
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="stat-card">
+    <!-- Work Lists Summary -->
+    <mat-card class="stat-card work-list-card">
       <mat-card-content>
-        <div class="stat-icon" style="background-color: #2196f3;">
-          <mat-icon>schedule</mat-icon>
+        <div class="stat-icon" style="background-color: #f44336;">
+          <mat-icon>assignment</mat-icon>
         </div>
         <div class="stat-info">
-          <div class="stat-value">{{ stats.active_cycles }}</div>
-          <div class="stat-label">Cycles actifs</div>
+          <div class="stat-value">{{ (stats.injections_today || 0) + (stats.vet_checks_pending || 0) + (stats.heat_checks_today || 0) }}</div>
+          <div class="stat-label">{{ 'DASHBOARD.WORK_LISTS' | translate }}</div>
+          <div class="sub-stat">
+            <small>{{ stats.injections_today || 0 }} injections</small>
+            <small>{{ stats.vet_checks_pending || 0 }} vet checks</small>
+          </div>
         </div>
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="stat-card">
-      <mat-card-content>
-        <div class="stat-icon" style="background-color: #ff9800;">
-          <mat-icon>pending</mat-icon>
-        </div>
-        <div class="stat-info">
-          <div class="stat-value">{{ stats.pending_inseminations }}</div>
-          <div class="stat-label">IA en attente</div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-
+    <!-- Pregnant -->
     <mat-card class="stat-card">
       <mat-card-content>
         <div class="stat-icon" style="background-color: #9c27b0;">
@@ -52,7 +48,7 @@
         </div>
         <div class="stat-info">
           <div class="stat-value">{{ stats.pregnant_cattle }}</div>
-          <div class="stat-label">Vaches gestantes</div>
+          <div class="stat-label">{{ 'DASHBOARD.PREGNANT' | translate }}</div>
         </div>
       </mat-card-content>
     </mat-card>
@@ -62,25 +58,38 @@
     <mat-spinner></mat-spinner>
   </div>
 
-  <div class="quick-actions">
-    <h2>Actions rapides</h2>
-    <div class="actions-grid">
-      <button mat-raised-button color="primary" routerLink="/cattle">
-        <mat-icon>pets</mat-icon>
-        Gérer les bovins
-      </button>
-      <button mat-raised-button color="primary" routerLink="/cycles">
-        <mat-icon>sync</mat-icon>
-        Cycles de synchronisation
-      </button>
-      <button mat-raised-button color="primary" routerLink="/inseminations">
-        <mat-icon>science</mat-icon>
-        Inséminations
-      </button>
-      <button mat-raised-button color="primary" routerLink="/protocols">
-        <mat-icon>list</mat-icon>
-        Protocoles
-      </button>
-    </div>
+  <!-- Navigation Cards -->
+  <div class="nav-cards-container">
+    <mat-card class="nav-card health" routerLink="/health">
+      <mat-card-content>
+        <mat-icon>local_hospital</mat-icon>
+        <h2>{{ 'NAV.HEALTH' | translate }}</h2>
+        <p>Maladies, Traitements, Suivi</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="nav-card reproduction" routerLink="/reproduction">
+      <mat-card-content>
+        <mat-icon>favorite</mat-icon>
+        <h2>{{ 'NAV.REPRODUCTION' | translate }}</h2>
+        <p>Protocoles, Inséminations, Planning</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="nav-card config" routerLink="/config">
+      <mat-card-content>
+        <mat-icon>settings</mat-icon>
+        <h2>{{ 'NAV.CONFIG' | translate }}</h2>
+        <p>Paramètres généraux</p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="nav-card users" routerLink="/users">
+      <mat-card-content>
+        <mat-icon>people</mat-icon>
+        <h2>{{ 'NAV.USERS' | translate }}</h2>
+        <p>Gestion des accès</p>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

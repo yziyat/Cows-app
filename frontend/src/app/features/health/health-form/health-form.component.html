@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>{{ isEdit ? ('COMMON.EDIT' | translate) : ('COMMON.ADD' | translate) }} Record</h2>
+<mat-dialog-content [formGroup]="form">
+    <div class="form-container">
+        <mat-form-field appearance="fill">
+            <mat-label>ID (Ear Tag)</mat-label>
+            <input matInput formControlName="ear_tag">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Diagnostic</mat-label>
+            <input matInput formControlName="diagnosis">
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="diagnosis_date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Sévérité</mat-label>
+            <mat-select formControlName="severity">
+                <mat-option value="MILD">Léger</mat-option>
+                <mat-option value="MODERATE">Modéré</mat-option>
+                <mat-option value="SEVERE">Sévère</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Statut</mat-label>
+            <mat-select formControlName="status">
+                <mat-option value="ACTIVE">Actif</mat-option>
+                <mat-option value="RECOVERED">Guéri</mat-option>
+                <mat-option value="DECEASED">Décédé</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Notes</mat-label>
+            <textarea matInput formControlName="notes"></textarea>
+        </mat-form-field>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Annuler</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || loading">
+        Enregistrer
+    </button>
+</mat-dialog-actions>

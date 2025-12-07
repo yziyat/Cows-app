@@ -42,8 +42,20 @@ const routes: Routes = [
         component: CycleListComponent
       },
       {
+        path: 'health',
+        loadChildren: () => import('./features/health/health.module').then(m => m.HealthModule)
+      },
+      {
         path: 'inseminations',
         component: InseminationListComponent
+      },
+      {
+        path: 'reproduction',
+        loadChildren: () => import('./features/reproduction/reproduction.module').then(m => m.ReproductionModule)
+      },
+      {
+        path: 'users',
+        loadChildren: () => import('./features/users/user-management.module').then(m => m.UserManagementModule)
       },
       {
         path: '',

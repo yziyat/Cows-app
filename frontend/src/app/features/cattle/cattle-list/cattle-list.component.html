@@ -2,13 +2,18 @@
 <div class="cattle-list-container">
   <div class="header">
     <h1>Gestion des Bovins</h1>
-    <button mat-raised-button 
-            color="primary" 
-            *ngIf="canEdit()"
-            (click)="openCreateDialog()">
-      <mat-icon>add</mat-icon>
-      Ajouter un bovin
-    </button>
+    <div class="header-actions">
+      <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls" style="display: none;">
+      <button mat-raised-button color="accent" *ngIf="canEdit()" (click)="fileInput.click()"
+        style="margin-right: 10px;">
+        <mat-icon>upload</mat-icon>
+        Importer Excel
+      </button>
+      <button mat-raised-button color="primary" *ngIf="canEdit()" (click)="openCreateDialog()">
+        <mat-icon>add</mat-icon>
+        Ajouter un bovin
+      </button>
+    </div>
   </div>
 
   <mat-card class="filters-card">
@@ -54,11 +59,6 @@
         <td mat-cell *matCellDef="let cattle">{{ cattle.ear_tag }}</td>
       </ng-container>
 
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Nom</th>
-        <td mat-cell *matCellDef="let cattle">{{ cattle.name || '-' }}</td>
-      </ng-container>
-
       <ng-container matColumnDef="breed">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Race</th>
         <td mat-cell *matCellDef="let cattle">{{ cattle.breed || '-' }}</td>
@@ -87,6 +87,31 @@
             {{ cattle.status }}
           </span>
         </td>
+      </ng-container>
+
+      <ng-container matColumnDef="electronic_id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>EID</th>
+        <td mat-cell *matCellDef="let cattle">{{ cattle.electronic_id || '-' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="pen">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Enclos (PEN)</th>
+        <td mat-cell *matCellDef="let cattle">{{ cattle.pen || '-' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="repro_status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Repro</th>
+        <td mat-cell *matCellDef="let cattle">{{ cattle.repro_status || '-' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lactation_number">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Lact</th>
+        <td mat-cell *matCellDef="let cattle">{{ cattle.lactation_number || '-' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="days_in_milk">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Jours Lait (DIM)</th>
+        <td mat-cell *matCellDef="let cattle">{{ cattle.days_in_milk || '-' }}</td>
       </ng-container>
 
       <ng-container matColumnDef="actions">
@@ -122,8 +147,7 @@
       </tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" 
-                   showFirstLastButtons>
+    <mat-paginator [pageSizeOptions]="[50, 100, 200, 500]" showFirstLastButtons aria-label="Select page of cattle">
     </mat-paginator>
   </mat-card>
 </div>

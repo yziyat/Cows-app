@@ -7,6 +7,7 @@ import { ProtocolService } from '../../../core/services/protocol.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { SynchronizationProtocol } from '../../../models/protocol.model';
 import { ProtocolFormDialogComponent } from '../protocol-form-dialog/protocol-form-dialog.component';
+import { BulkProtocolAssignmentDialogComponent } from '../bulk-protocol-assignment-dialog/bulk-protocol-assignment-dialog.component';
 
 @Component({
     selector: 'app-protocol-list',
@@ -80,5 +81,12 @@ export class ProtocolListComponent implements OnInit {
                 error: (err) => console.error(err)
             });
         }
+    }
+
+    openBulkAssignDialog(protocol: SynchronizationProtocol): void {
+        this.dialog.open(BulkProtocolAssignmentDialogComponent, {
+            width: '600px',
+            data: { protocol }
+        });
     }
 }
