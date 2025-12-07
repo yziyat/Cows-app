@@ -4,8 +4,8 @@ import { User } from '../../../models/user.model';
 import { MatSelectChange } from '@angular/material/select';
 
 @Component({
-    selector: 'app-user-list',
-    template: `
+  selector: 'app-user-list',
+  template: `
     <div class="user-list-container">
       <h1>Gestion des Utilisateurs</h1>
 
@@ -45,7 +45,7 @@ import { MatSelectChange } from '@angular/material/select';
       </mat-card>
     </div>
   `,
-    styles: [`
+  styles: [`
     .user-list-container {
       padding: 24px;
     }
@@ -63,48 +63,48 @@ import { MatSelectChange } from '@angular/material/select';
   `]
 })
 export class UserListComponent implements OnInit {
-    users: User[] = [];
-    displayedColumns: string[] = ['email', 'displayName', 'role'];
-    loading = true;
+  users: User[] = [];
+  displayedColumns: string[] = ['email', 'displayName', 'role'];
+  loading = true;
 
-    constructor(private userService: UserService) { }
+  constructor(private userService: UserService) { }
 
-    ngOnInit(): void {
-        this.loadUsers();
-    }
+  ngOnInit(): void {
+    this.loadUsers();
+  }
 
-    loadUsers(): void {
-        this.loading = true;
-        this.userService.getAllUsers().subscribe({
-            next: (data) => {
-                this.users = data;
-                this.loading = false;
-            },
-            error: (err) => {
-                console.error('Error loading users', err);
-                this.loading = false;
-            }
-        });
-    }
+  loadUsers(): void {
+    this.loading = true;
+    this.userService.getAllUsers().subscribe({
+      next: (data) => {
+        this.users = data;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error loading users', err);
+        this.loading = false;
+      }
+    });
+  }
 
-    updateRole(user: User, event: MatSelectChange): void {
-        const newRole = event.value;
-        if (confirm(`Changer le rôle de ${user.email} en ${newRole}?`)) {
-            this.userService.updateUserRole(user.uid, newRole).subscribe({
-                next: () => {
-                    // Success feedback?
-                },
-                error: (err) => {
-                    console.error(err);
-                    alert('Erreur lors de la mise à jour');
-                    // Revert? simpler to reload
-                    this.loadUsers();
-                }
-            });
-        } else {
-            // Revert selection visually if cancelled? 
-            // Ideally we should reload or handle state, but this is a simple implementation.
-            this.loadUsers();
+  updateRole(user: User, event: MatSelectChange): void {
+    const newRole = event.value;
+    if (confirm(`Changer le rôle de ${user.email} en ${newRole}?`)) {
+      this.userService.updateUserRole(user.uid || user.id || '', newRole).subscribe({
+        next: () => {
+          // Success feedback?
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Erreur lors de la mise à jour');
+          // Revert? simpler to reload
+          this.loadUsers();
         }
+      });
+    } else {
+      // Revert selection visually if cancelled? 
+      // Ideally we should reload or handle state, but this is a simple implementation.
+      this.loadUsers();
     }
+  }
 }

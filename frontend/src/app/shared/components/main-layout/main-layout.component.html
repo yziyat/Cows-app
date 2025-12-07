@@ -18,7 +18,7 @@
       <div class="user-info" *ngIf="currentUser">
         <mat-icon>account_circle</mat-icon>
         <div class="user-details">
-          <div class="user-name">{{ currentUser.first_name || currentUser.username }}</div>
+          <div class="user-name">{{ currentUser.displayName || currentUser.username || currentUser.email }}</div>
           <div class="user-role">{{ currentUser.role }}</div>
         </div>
       </div>

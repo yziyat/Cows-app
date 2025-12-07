@@ -3,7 +3,7 @@
   <div class="header">
     <h1>{{ 'DASHBOARD.TITLE' | translate }}</h1>
     <p *ngIf="currentUser">
-      Welcome, {{ currentUser.first_name || currentUser.username }} 
+      Welcome, {{ currentUser.displayName || currentUser.username || currentUser.email }}
       <span class="role-badge">{{ currentUser.role }}</span>
     </p>
   </div>
@@ -30,7 +30,8 @@
           <mat-icon>assignment</mat-icon>
         </div>
         <div class="stat-info">
-          <div class="stat-value">{{ (stats.injections_today || 0) + (stats.vet_checks_pending || 0) + (stats.heat_checks_today || 0) }}</div>
+          <div class="stat-value">{{ (stats.injections_today || 0) + (stats.vet_checks_pending || 0) +
+            (stats.heat_checks_today || 0) }}</div>
           <div class="stat-label">{{ 'DASHBOARD.WORK_LISTS' | translate }}</div>
           <div class="sub-stat">
             <small>{{ stats.injections_today || 0 }} injections</small>
