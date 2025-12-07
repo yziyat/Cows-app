@@ -1,0 +1,94 @@
+<h2 mat-dialog-title>Aperçu de l'importation</h2>
+
+<mat-dialog-content>
+    <!-- Statistics Card -->
+    <mat-card class="stats-card">
+        <mat-card-content>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">{{importResult.totalRows}}</div>
+                    <div class="stat-label">Total</div>
+                </div>
+                <div class="stat-item valid">
+                    <div class="stat-value">{{importResult.validRows}}</div>
+                    <div class="stat-label">Valides</div>
+                </div>
+                <div class="stat-item warning">
+                    <div class="stat-value">{{importResult.warningRows}}</div>
+                    <div class="stat-label">Avertissements</div>
+                </div>
+                <div class="stat-item error">
+                    <div class="stat-value">{{importResult.errorRows}}</div>
+                    <div class="stat-label">Erreurs</div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+
+    <!-- Data Preview Table -->
+    <div class="table-container">
+        <table mat-table [dataSource]="importResult.rows" class="preview-table">
+
+            <ng-container matColumnDef="rowNumber">
+                <th mat-header-cell *matHeaderCellDef>Ligne</th>
+                <td mat-cell *matCellDef="let row">{{row.rowNumber}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="earTag">
+                <th mat-header-cell *matHeaderCellDef>ID/Boucle</th>
+                <td mat-cell *matCellDef="let row">
+                    <span [class.cleaned]="row.original['ID'] !== row.cleaned.ear_tag">
+                        {{row.cleaned.ear_tag || '-'}}
+                    </span>
+                    <small *ngIf="row.original['ID'] !== row.cleaned.ear_tag" class="original-value">
+                        ({{row.original['ID']}})
+                    </small>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="breed">
+                <th mat-header-cell *matHeaderCellDef>Race</th>
+                <td mat-cell *matCellDef="let row">{{row.cleaned.breed_code || '-'}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="birthDate">
+                <th mat-header-cell *matHeaderCellDef>Date de naissance</th>
+                <td mat-cell *matCellDef="let row">
+                    {{row.cleaned.birth_date ? (row.cleaned.birth_date | date:'dd/MM/yyyy') : '-'}}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Statut</th>
+                <td mat-cell *matCellDef="let row">
+                    <mat-icon *ngIf="row.isValid && row.warnings.length === 0" color="primary">check_circle</mat-icon>
+                    <mat-icon *ngIf="row.warnings.length > 0 && row.isValid" class="warning-icon">warning</mat-icon>
+                    <mat-icon *ngIf="!row.isValid" color="warn">error</mat-icon>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="issues">
+                <th mat-header-cell *matHeaderCellDef>Problèmes</th>
+                <td mat-cell *matCellDef="let row">
+                    <span class="issues-text">{{getIssuesText(row)}}</span>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="getRowClass(row)"></tr>
+        </table>
+    </div>
+
+    <div *ngIf="importing" class="importing-overlay">
+        <mat-spinner diameter="50"></mat-spinner>
+        <p>Importation en cours...</p>
+    </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()" [disabled]="importing">Annuler</button>
+    <button mat-raised-button color="primary" (click)="onImport()"
+        [disabled]="importing || importResult.validRows === 0">
+        Importer {{importResult.validRows}} animaux
+    </button>
+</mat-dialog-actions>
