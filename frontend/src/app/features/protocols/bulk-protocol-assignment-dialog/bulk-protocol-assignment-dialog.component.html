@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>Attribuer Protocole: {{data.protocol.name}}</h2>
+<mat-dialog-content>
+    <form [formGroup]="form">
+        <p>Sélectionnez un fichier Excel contenant une colonne <strong>ID</strong> (Numéro d'oreille) pour démarrer ce
+            protocole sur plusieurs bovins.</p>
+
+        <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Date de début</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="start_date" required>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <div class="file-upload-section">
+            <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx, .xls" style="display: none;">
+            <button mat-stroked-button color="primary" (click)="fileInput.click()">
+                <mat-icon>upload_file</mat-icon>
+                Sélectionner fichier Excel
+            </button>
+            <span class="file-name" *ngIf="selectedFile">{{ selectedFile?.name }}</span>
+        </div>
+
+        <div *ngIf="previewCount !== null" class="preview-info">
+            <mat-icon color="accent">check_circle</mat-icon>
+            <span>{{ previewCount }} bovins identifiés prêt à être assignés.</span>
+        </div>
+
+        <div *ngIf="loading" class="loading-spinner">
+            <mat-spinner diameter="30"></mat-spinner>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Annuler</button>
+    <button mat-raised-button color="primary" [disabled]="!form.valid || !cattleList.length || loading"
+        (click)="processAssignment()">
+        Confirmer l'attribution
+    </button>
+</mat-dialog-actions>

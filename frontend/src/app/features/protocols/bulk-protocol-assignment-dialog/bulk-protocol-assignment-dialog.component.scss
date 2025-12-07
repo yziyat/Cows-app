@@ -1,0 +1,25 @@
+.full-width {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.file-upload-section {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.preview-info {
+    margin-top: 10px;
+    color: green;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.loading-spinner {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
