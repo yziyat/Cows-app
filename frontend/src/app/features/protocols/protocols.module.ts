@@ -24,7 +24,6 @@ import { ProtocolListComponent } from './protocol-list/protocol-list.component';
 import { ProtocolFormDialogComponent } from './protocol-form-dialog/protocol-form-dialog.component';
 import { BulkProtocolAssignmentDialogComponent } from './bulk-protocol-assignment-dialog/bulk-protocol-assignment-dialog.component';
 import { AuthGuard } from '../../core/guards/auth.guard';
-import { SharedModule } from '../../shared/shared.module';
 
 const routes: Routes = [
     { path: '', component: ProtocolListComponent, canActivate: [AuthGuard] }
@@ -40,7 +39,6 @@ const routes: Routes = [
         CommonModule,
         ReactiveFormsModule,
         RouterModule.forChild(routes),
-        SharedModule,
         MatTableModule,
         MatButtonModule,
         MatIconModule,
