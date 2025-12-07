@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, signOut, user, User as FirebaseUser } from '@angular/fire/auth';
+import { Auth, signInWithEmailAndPassword, signOut, user, User as FirebaseUser, browserLocalPersistence, setPersistence } from '@angular/fire/auth';
 import { Firestore, doc, docData, setDoc, getDoc } from '@angular/fire/firestore';
-import { Observable, BehaviorSubject, from, of, switchMap } from 'rxjs';
+import { Observable, BehaviorSubject, ReplaySubject, from, of, switchMap } from 'rxjs';
 import { User, LoginRequest } from '../../models/user.model';
 
 @Injectable({
@@ -11,15 +11,29 @@ export class AuthService {
   private currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
   public currentUser: Observable<User | null> = this.currentUserSubject.asObservable();
 
+  // Signal when auth state is ready (loaded from persistence)
+  private authStateReadySubject = new ReplaySubject<boolean>(1);
+  public authStateReady$ = this.authStateReadySubject.asObservable();
+
   constructor(private auth: Auth, private firestore: Firestore) {
-    // Monitor Auth State
-    user(this.auth).pipe(
-      switchMap(firebaseUser => {
-        if (!firebaseUser) return of(null);
-        return this.syncUserWithFirestore(firebaseUser);
-      })
-    ).subscribe(appUser => {
-      this.currentUserSubject.next(appUser);
+    // Set auth persistence to browser local storage
+    setPersistence(this.auth, browserLocalPersistence).then(() => {
+      // Monitor Auth State after persistence is set
+      user(this.auth).pipe(
+        switchMap(firebaseUser => {
+          if (!firebaseUser) {
+            this.authStateReadySubject.next(true);
+            return of(null);
+          }
+          return this.syncUserWithFirestore(firebaseUser);
+        })
+      ).subscribe(appUser => {
+        this.currentUserSubject.next(appUser);
+        this.authStateReadySubject.next(true);
+      });
+    }).catch(error => {
+      console.error('Error setting auth persistence:', error);
+      this.authStateReadySubject.next(true); // Still mark as ready even on error
     });
   }
 
