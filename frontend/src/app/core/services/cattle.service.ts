@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc, deleteDoc, query, where, writeBatch, getDocs } from '@angular/fire/firestore';
 import { Observable, from, map } from 'rxjs';
 import { Cattle, CattleListResponse } from '../../models/cattle.model';

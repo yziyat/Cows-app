@@ -1,13 +1,15 @@
 export interface Cattle {
     id: number | string;
-    id: number | string;
     ear_tag: string; // ID
+    name?: string;
     breed?: string;
     birth_date?: Date; // BDAT
     sex: 'male' | 'female'; // GENDR
     status: 'active' | 'sold' | 'deceased' | 'culled';
     weight?: number;
     notes?: string;
+    mother_id?: string;
+    father_id?: string;
 
     // Production & Reproduction Fields
     pen?: string; // PEN

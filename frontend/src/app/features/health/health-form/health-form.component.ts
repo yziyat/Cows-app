@@ -47,21 +47,23 @@ export class HealthFormComponent implements OnInit {
             const record = this.form.value;
 
             let request$;
-            request$ = this.healthService.updateRecord(this.data.id, record);
-        } else {
-            request$ = this.healthService.createRecord(record);
-        }
-
-        request$.subscribe({
-            next: () => {
-                this.loading = false;
-                this.dialogRef.close(true);
-            },
-            error: (err: any) => {
-                console.error(err);
-                this.loading = false;
+            if (this.isEdit) {
+                request$ = this.healthService.updateRecord(this.data.id, record);
+            } else {
+                request$ = this.healthService.createRecord(record);
             }
-        });
+
+            request$.subscribe({
+                next: () => {
+                    this.loading = false;
+                    this.dialogRef.close(true);
+                },
+                error: (err: any) => {
+                    console.error(err);
+                    this.loading = false;
+                }
+            });
+        }
     }
 }
-}
+
