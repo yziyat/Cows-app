@@ -57,6 +57,7 @@ import { CycleListComponent } from './features/cycles/cycle-list/cycle-list.comp
 import { CycleFormDialogComponent } from './features/cycles/cycle-form-dialog/cycle-form-dialog.component';
 import { InseminationListComponent } from './features/inseminations/insemination-list/insemination-list.component';
 import { InseminationFormDialogComponent } from './features/inseminations/insemination-form-dialog/insemination-form-dialog.component';
+import { ImportPreviewDialogComponent } from './features/cattle/import-preview-dialog/import-preview-dialog.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { InseminationFormDialogComponent } from './features/inseminations/insemi
     CycleListComponent,
     CycleFormDialogComponent,
     InseminationListComponent,
-    InseminationFormDialogComponent
+    InseminationFormDialogComponent,
+    ImportPreviewDialogComponent
   ],
   imports: [
     BrowserModule,

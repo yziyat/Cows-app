@@ -11,6 +11,7 @@ import { Cattle } from '../../../models/cattle.model';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { CattleFormDialogComponent } from '../cattle-form-dialog/cattle-form-dialog.component';
+import { ImportPreviewDialogComponent } from '../import-preview-dialog/import-preview-dialog.component';
 import { ExcelService } from '../../../services/excel.service';
 
 @Component({
@@ -40,23 +41,39 @@ export class CattleListComponent implements OnInit {
     this.dataSource = new MatTableDataSource<Cattle>();
   }
 
-  async onFileSelected(event: any): Promise<void> {
+  onFileSelected(event: any): void {
     const file: File = event.target.files[0];
     if (file) {
       this.loading = true;
-      try {
-        const cattleList = await this.excelService.readCattleFile(file);
-        await this.cattleService.batchUpsertCattle(cattleList);
-        this.loadCattle(); // Reload list
-        alert('Import réussi !');
-      } catch (error) {
-        console.error('Import failed', error);
-        alert('Erreur lors de l\'import');
-      } finally {
-        this.loading = false;
-        // Reset file input
-        event.target.value = '';
-      }
+
+      // Use new validation method
+      this.excelService.readAndValidateCattleFile(file).subscribe({
+        next: (importResult) => {
+          this.loading = false;
+
+          // Open preview dialog
+          const dialogRef = this.dialog.open(ImportPreviewDialogComponent, {
+            width: '90%',
+            maxWidth: '1200px',
+            data: { importResult },
+            disableClose: true
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+            if (result && result.imported) {
+              this.loadCattle(); // Reload list after successful import
+            }
+          });
+        },
+        error: (error) => {
+          console.error('File read error:', error);
+          alert('Erreur lors de la lecture du fichier');
+          this.loading = false;
+        }
+      });
+
+      // Reset file input
+      event.target.value = '';
     }
   }
 
