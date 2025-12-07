@@ -8,6 +8,7 @@ import { CattleDetailComponent } from './features/cattle/cattle-detail/cattle-de
 import { ProtocolListComponent } from './features/protocols/protocol-list/protocol-list.component';
 import { CycleListComponent } from './features/cycles/cycle-list/cycle-list.component';
 import { InseminationListComponent } from './features/inseminations/insemination-list/insemination-list.component';
+import { PenListComponent } from './features/pens/pen-list/pen-list.component';
 import { MainLayoutComponent } from './shared/components/main-layout/main-layout.component';
 import { AuthGuard } from './core/guards/auth.guard';
 
@@ -48,6 +49,10 @@ const routes: Routes = [
       {
         path: 'inseminations',
         component: InseminationListComponent
+      },
+      {
+        path: 'pens',
+        component: PenListComponent
       },
       {
         path: 'reproduction',
