@@ -5,8 +5,10 @@ export interface User {
     username?: string;
     email: string;
     displayName?: string;
-    role: 'admin' | 'user' | 'viewer';
+    role: 'admin' | 'editor' | 'viewer';
     photoURL?: string;
+    status?: 'active' | 'disabled';
+    lastLogin?: Date;
     created_at?: Date;
     updated_at?: Date;
 }
