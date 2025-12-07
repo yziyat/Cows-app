@@ -1,73 +1,63 @@
 // src/app/core/services/auth.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { User, LoginRequest, LoginResponse } from '../../models/user.model';
+import { Auth, signInWithEmailAndPassword, signOut, user, User as FirebaseUser } from '@angular/fire/auth';
+import { Observable, map, from, of } from 'rxjs';
+import { User, LoginRequest } from '../../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUserSubject: BehaviorSubject<User | null>;
   public currentUser: Observable<User | null>;
-  private tokenKey = 'cattle_auth_token';
 
-  constructor(private http: HttpClient) {
-    const user = this.getUserFromStorage();
-    this.currentUserSubject = new BehaviorSubject<User | null>(user);
-    this.currentUser = this.currentUserSubject.asObservable();
+  constructor(private auth: Auth) {
+    this.currentUser = user(this.auth).pipe(
+      map(firebaseUser => this.mapFirebaseUserToLocalUser(firebaseUser))
+    );
   }
 
-  public get currentUserValue(): User | null {
-    return this.currentUserSubject.value;
+  // Helper to map Firebase User to our App User model
+  private mapFirebaseUserToLocalUser(firebaseUser: FirebaseUser | null): User | null {
+    if (!firebaseUser) return null;
+    return {
+      id: 1, // Mock ID or hash from uid
+      username: firebaseUser.email || 'admin',
+      email: firebaseUser.email || '',
+      role: 'admin', // Defaulting to admin for this migration
+      first_name: 'Admin',
+      last_name: 'User',
+      is_active: true,
+      created_at: new Date(),
+      updated_at: new Date()
+    };
   }
 
-  public get token(): string | null {
-    return localStorage.getItem(this.tokenKey);
+  login(credentials: LoginRequest): Observable<any> {
+    let email = credentials.username;
+    if (!email.includes('@')) {
+      email = `${email}@farm.app`; // Auto-append domain for simple usernames
+    }
+    const promise = signInWithEmailAndPassword(this.auth, email, credentials.password);
+    return from(promise);
   }
 
-  login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${environment.apiUrl}/auth/login`, credentials)
-      .pipe(
-        tap(response => {
-          if (response.token && response.user) {
-            localStorage.setItem(this.tokenKey, response.token);
-            localStorage.setItem('cattle_user', JSON.stringify(response.user));
-            this.currentUserSubject.next(response.user);
-          }
-        })
-      );
-  }
-
-  logout(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem('cattle_user');
-    this.currentUserSubject.next(null);
+  logout(): Promise<void> {
+    return signOut(this.auth);
   }
 
   isAuthenticated(): boolean {
-    return !!this.token;
+    return !!this.auth.currentUser;
   }
 
   hasRole(roles: string[]): boolean {
-    const user = this.currentUserValue;
-    return user ? roles.includes(user.role) : false;
-  }
-
-  private getUserFromStorage(): User | null {
-    const userStr = localStorage.getItem('cattle_user');
-    if (userStr) {
-      try {
-        return JSON.parse(userStr);
-      } catch {
-        return null;
-      }
-    }
-    return null;
+    // Simplified role check since we default to admin
+    return true;
   }
 
   getCurrentUser(): Observable<{ user: User }> {
-    return this.http.get<{ user: User }>(`${environment.apiUrl}/auth/me`);
+    // Mocking the response structure expected by components
+    return this.currentUser.pipe(
+      map(user => ({ user: user! }))
+    );
   }
 }

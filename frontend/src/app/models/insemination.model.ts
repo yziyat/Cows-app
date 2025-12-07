@@ -1,10 +1,10 @@
 // src/app/models/insemination.model.ts
 export interface Insemination {
-    id: number;
-    cattle_id: number;
+    id: number | string;
+    cattle_id: number | string;
     insemination_date: Date;
-    heat_observation_id?: number;
-    cycle_id?: number;
+    heat_observation_id?: number | string;
+    cycle_id?: number | string;
     bull_name?: string;
     bull_registration?: string;
     technician_name?: string;
@@ -15,7 +15,7 @@ export interface Insemination {
     ear_tag?: string;
     cattle_name?: string;
     notes?: string;
-    performed_by?: number;
+    performed_by?: number | string;
     performed_by_name?: string;
     created_at: Date;
     updated_at: Date;

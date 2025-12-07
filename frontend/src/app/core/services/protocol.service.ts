@@ -1,37 +1,53 @@
 // src/app/core/services/protocol.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import { Observable, from, map } from 'rxjs';
 import { SynchronizationProtocol, ProtocolWithSteps } from '../../models/protocol.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProtocolService {
-  private apiUrl = `${environment.apiUrl}/protocols`;
+  private collectionName = 'protocols';
 
-  constructor(private http: HttpClient) { }
+  constructor(private firestore: Firestore) { }
 
   getAllProtocols(): Observable<{ protocols: SynchronizationProtocol[] }> {
-    return this.http.get<{ protocols: SynchronizationProtocol[] }>(this.apiUrl);
+    const protocolsCollection = collection(this.firestore, this.collectionName);
+    return collectionData(protocolsCollection, { idField: 'id' }).pipe(
+      map(data => ({ protocols: data as SynchronizationProtocol[] }))
+    );
   }
 
-  getProtocolById(id: number): Observable<ProtocolWithSteps> {
-    return this.http.get<ProtocolWithSteps>(`${this.apiUrl}/${id}`);
+  getProtocolById(id: number | string): Observable<ProtocolWithSteps> {
+    const docRef = doc(this.firestore, `${this.collectionName}/${id}`);
+    return docData(docRef, { idField: 'id' }).pipe(
+      map(data => ({
+        protocol: data as SynchronizationProtocol,
+        steps: [] // Mock steps for now or fetch subcollection
+      }))
+    );
   }
 
-  createProtocol(protocol: any): Observable<{ message: string; protocol: SynchronizationProtocol }> {
-    return this.http.post<{ message: string; protocol: SynchronizationProtocol }>(this.apiUrl, protocol);
+  createProtocol(protocol: any): Observable<any> {
+    const collectionRef = collection(this.firestore, this.collectionName);
+    return from(addDoc(collectionRef, {
+      ...protocol,
+      created_at: new Date(),
+      updated_at: new Date()
+    }));
   }
 
-  updateProtocol(id: number, protocol: any): Observable<{ message: string; protocol: SynchronizationProtocol }> {
-    return this.http.put<{ message: string; protocol: SynchronizationProtocol }>(`${this.apiUrl}/${id}`, protocol);
+  updateProtocol(id: number | string, protocol: any): Observable<any> {
+    const docRef = doc(this.firestore, `${this.collectionName}/${id}`);
+    return from(updateDoc(docRef, {
+      ...protocol,
+      updated_at: new Date()
+    }));
   }
 
-  deleteProtocol(id: number): Observable<{ message: string }> {
-    return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
+  deleteProtocol(id: number | string): Observable<any> {
+    const docRef = doc(this.firestore, `${this.collectionName}/${id}`);
+    return from(deleteDoc(docRef));
   }
 }
-
-

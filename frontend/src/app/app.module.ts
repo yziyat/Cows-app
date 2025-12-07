@@ -4,6 +4,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { environment } from '../environments/environment';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 
 // Angular Material
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -70,6 +74,10 @@ import { InseminationFormDialogComponent } from './features/inseminations/insemi
     ReactiveFormsModule,
     FormsModule,
     AppRoutingModule,
+    // Firebase Modules
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
     // Material Modules
     MatToolbarModule,
     MatButtonModule,

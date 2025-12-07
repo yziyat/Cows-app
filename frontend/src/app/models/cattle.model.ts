@@ -1,14 +1,14 @@
 // src/app/models/cattle.model.ts
 export interface Cattle {
-    id: number;
+    id: number | string;
     ear_tag: string;
     name?: string;
     breed?: string;
     birth_date?: Date;
     sex: 'male' | 'female';
     status: 'active' | 'sold' | 'deceased' | 'culled';
-    mother_id?: number;
-    father_id?: number;
+    mother_id?: number | string;
+    father_id?: number | string;
     mother_tag?: string;
     father_tag?: string;
     weight?: number;

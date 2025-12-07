@@ -1,34 +1,49 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import { Observable, from, map } from 'rxjs';
 import { Insemination } from '../../models/insemination.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class InseminationService {
-    private apiUrl = `${environment.apiUrl}/inseminations`;
+    private collectionName = 'inseminations';
 
-    constructor(private http: HttpClient) { }
+    constructor(private firestore: Firestore) { }
 
     getAllInseminations(): Observable<{ inseminations: Insemination[] }> {
-        return this.http.get<{ inseminations: Insemination[] }>(this.apiUrl);
+        const collectionRef = collection(this.firestore, this.collectionName);
+        return collectionData(collectionRef, { idField: 'id' }).pipe(
+            map(data => ({ inseminations: data as Insemination[] }))
+        );
     }
 
-    getInsemination(id: number): Observable<{ insemination: Insemination }> {
-        return this.http.get<{ insemination: Insemination }>(`${this.apiUrl}/${id}`);
+    getInsemination(id: number | string): Observable<{ insemination: Insemination }> {
+        const docRef = doc(this.firestore, `${this.collectionName}/${id}`);
+        return docData(docRef, { idField: 'id' }).pipe(
+            map(data => ({ insemination: data as Insemination }))
+        );
     }
 
-    createInsemination(data: Partial<Insemination>): Observable<{ message: string; insemination: Insemination }> {
-        return this.http.post<{ message: string; insemination: Insemination }>(this.apiUrl, data);
+    createInsemination(data: Partial<Insemination>): Observable<any> {
+        const collectionRef = collection(this.firestore, this.collectionName);
+        return from(addDoc(collectionRef, {
+            ...data,
+            created_at: new Date(),
+            updated_at: new Date()
+        }));
     }
 
-    updateInsemination(id: number, data: Partial<Insemination>): Observable<{ message: string; insemination: Insemination }> {
-        return this.http.put<{ message: string; insemination: Insemination }>(`${this.apiUrl}/${id}`, data);
+    updateInsemination(id: number | string, data: Partial<Insemination>): Observable<any> {
+        const docRef = doc(this.firestore, `${this.collectionName}/${id}`);
+        return from(updateDoc(docRef, {
+            ...data,
+            updated_at: new Date()
+        }));
     }
 
-    deleteInsemination(id: number): Observable<{ message: string }> {
-        return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
+    deleteInsemination(id: number | string): Observable<any> {
+        const docRef = doc(this.firestore, `${this.collectionName}/${id}`);
+        return from(deleteDoc(docRef));
     }
 }

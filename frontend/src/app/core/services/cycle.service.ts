@@ -1,34 +1,49 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { Firestore, collection, collectionData, doc, docData, addDoc, updateDoc, deleteDoc } from '@angular/fire/firestore';
+import { Observable, from, map } from 'rxjs';
 import { SynchronizationCycle } from '../../models/cycle.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CycleService {
-    private apiUrl = `${environment.apiUrl}/cycles`;
+    private collectionName = 'cycles';
 
-    constructor(private http: HttpClient) { }
+    constructor(private firestore: Firestore) { }
 
     getAllCycles(): Observable<{ cycles: SynchronizationCycle[] }> {
-        return this.http.get<{ cycles: SynchronizationCycle[] }>(this.apiUrl);
+        const collectionRef = collection(this.firestore, this.collectionName);
+        return collectionData(collectionRef, { idField: 'id' }).pipe(
+            map(data => ({ cycles: data as SynchronizationCycle[] }))
+        );
     }
 
-    getCycle(id: number): Observable<{ cycle: SynchronizationCycle }> {
-        return this.http.get<{ cycle: SynchronizationCycle }>(`${this.apiUrl}/${id}`);
+    getCycle(id: number | string): Observable<{ cycle: SynchronizationCycle }> {
+        const docRef = doc(this.firestore, `${this.collectionName}/${id}`);
+        return docData(docRef, { idField: 'id' }).pipe(
+            map(data => ({ cycle: data as SynchronizationCycle }))
+        );
     }
 
-    createCycle(data: Partial<SynchronizationCycle>): Observable<{ message: string; cycle: SynchronizationCycle }> {
-        return this.http.post<{ message: string; cycle: SynchronizationCycle }>(this.apiUrl, data);
+    createCycle(data: Partial<SynchronizationCycle>): Observable<any> {
+        const collectionRef = collection(this.firestore, this.collectionName);
+        return from(addDoc(collectionRef, {
+            ...data,
+            created_at: new Date(),
+            updated_at: new Date()
+        }));
     }
 
-    updateCycle(id: number, data: Partial<SynchronizationCycle>): Observable<{ message: string; cycle: SynchronizationCycle }> {
-        return this.http.put<{ message: string; cycle: SynchronizationCycle }>(`${this.apiUrl}/${id}`, data);
+    updateCycle(id: number | string, data: Partial<SynchronizationCycle>): Observable<any> {
+        const docRef = doc(this.firestore, `${this.collectionName}/${id}`);
+        return from(updateDoc(docRef, {
+            ...data,
+            updated_at: new Date()
+        }));
     }
 
-    deleteCycle(id: number): Observable<{ message: string }> {
-        return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
+    deleteCycle(id: number | string): Observable<any> {
+        const docRef = doc(this.firestore, `${this.collectionName}/${id}`);
+        return from(deleteDoc(docRef));
     }
 }
