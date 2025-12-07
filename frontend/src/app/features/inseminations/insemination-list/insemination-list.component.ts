@@ -33,9 +33,9 @@ export class InseminationListComponent implements OnInit {
 
     loadInseminations(): void {
         this.loading = true;
-        this.inseminationService.getInseminations().subscribe({
-            next: (data) => {
-                this.dataSource.data = data;
+        this.inseminationService.getAllInseminations().subscribe({
+            next: (response) => {
+                this.dataSource.data = response.inseminations;
                 this.loading = false;
                 setTimeout(() => {
                     this.dataSource.paginator = this.paginator;

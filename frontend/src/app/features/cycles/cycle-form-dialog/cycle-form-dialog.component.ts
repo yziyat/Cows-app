@@ -38,8 +38,8 @@ export class CycleFormDialogComponent implements OnInit {
     }
 
     loadProtocols(): void {
-        this.protocolService.getProtocols().subscribe({
-            next: (protocols) => this.protocols = protocols,
+        this.protocolService.getAllProtocols().subscribe({
+            next: (response) => this.protocols = response.protocols,
             error: (err) => console.error('Error loading protocols', err)
         });
     }

@@ -24,6 +24,14 @@ export class ProtocolService {
   createProtocol(protocol: any): Observable<{ message: string; protocol: SynchronizationProtocol }> {
     return this.http.post<{ message: string; protocol: SynchronizationProtocol }>(this.apiUrl, protocol);
   }
+
+  updateProtocol(id: number, protocol: any): Observable<{ message: string; protocol: SynchronizationProtocol }> {
+    return this.http.put<{ message: string; protocol: SynchronizationProtocol }>(`${this.apiUrl}/${id}`, protocol);
+  }
+
+  deleteProtocol(id: number): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
+  }
 }
 
 

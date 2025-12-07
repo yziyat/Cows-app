@@ -33,9 +33,9 @@ export class CycleListComponent implements OnInit {
 
     loadCycles(): void {
         this.loading = true;
-        this.cycleService.getCycles().subscribe({
-            next: (cycles) => {
-                this.dataSource.data = cycles;
+        this.cycleService.getAllCycles().subscribe({
+            next: (response) => {
+                this.dataSource.data = response.cycles;
                 this.loading = false;
                 setTimeout(() => {
                     this.dataSource.paginator = this.paginator;

@@ -35,9 +35,9 @@ export class ProtocolListComponent implements OnInit {
 
     loadProtocols(): void {
         this.loading = true;
-        this.protocolService.getProtocols().subscribe({
-            next: (protocols) => {
-                this.dataSource.data = protocols;
+        this.protocolService.getAllProtocols().subscribe({
+            next: (response) => {
+                this.dataSource.data = response.protocols;
                 this.loading = false;
                 setTimeout(() => {
                     this.dataSource.paginator = this.paginator;

@@ -2,16 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-
-export interface Cycle {
-    id: string;
-    cattle_id: string;
-    start_date: string;
-    end_date?: string;
-    status: string;
-    observation?: string;
-    cattle?: any;
-}
+import { SynchronizationCycle } from '../../models/cycle.model';
 
 @Injectable({
     providedIn: 'root'
@@ -21,23 +12,23 @@ export class CycleService {
 
     constructor(private http: HttpClient) { }
 
-    getAllCycles(): Observable<Cycle[]> {
-        return this.http.get<Cycle[]>(this.apiUrl);
+    getAllCycles(): Observable<{ cycles: SynchronizationCycle[] }> {
+        return this.http.get<{ cycles: SynchronizationCycle[] }>(this.apiUrl);
     }
 
-    getCycle(id: string): Observable<Cycle> {
-        return this.http.get<Cycle>(`${this.apiUrl}/${id}`);
+    getCycle(id: number): Observable<{ cycle: SynchronizationCycle }> {
+        return this.http.get<{ cycle: SynchronizationCycle }>(`${this.apiUrl}/${id}`);
     }
 
-    createCycle(data: Partial<Cycle>): Observable<Cycle> {
-        return this.http.post<Cycle>(this.apiUrl, data);
+    createCycle(data: Partial<SynchronizationCycle>): Observable<{ message: string; cycle: SynchronizationCycle }> {
+        return this.http.post<{ message: string; cycle: SynchronizationCycle }>(this.apiUrl, data);
     }
 
-    updateCycle(id: string, data: Partial<Cycle>): Observable<Cycle> {
-        return this.http.put<Cycle>(`${this.apiUrl}/${id}`, data);
+    updateCycle(id: number, data: Partial<SynchronizationCycle>): Observable<{ message: string; cycle: SynchronizationCycle }> {
+        return this.http.put<{ message: string; cycle: SynchronizationCycle }>(`${this.apiUrl}/${id}`, data);
     }
 
-    deleteCycle(id: string): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    deleteCycle(id: number): Observable<{ message: string }> {
+        return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
     }
 }

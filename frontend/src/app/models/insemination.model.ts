@@ -19,4 +19,8 @@ export interface Insemination {
     performed_by_name?: string;
     created_at: Date;
     updated_at: Date;
+    // Compatibility fields for form/frontend
+    date?: Date;
+    bull_id?: string;
+    success?: boolean;
 }

@@ -10,6 +10,7 @@ export interface SynchronizationProtocol {
     created_by_name?: string;
     created_at: Date;
     updated_at: Date;
+    steps?: any[]; // Optional steps property for UI handling
 }
 
 export interface ProtocolStep {
