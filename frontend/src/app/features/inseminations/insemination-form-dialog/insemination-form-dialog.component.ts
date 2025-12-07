@@ -41,7 +41,7 @@ export class InseminationFormDialogComponent implements OnInit {
 
     loadCattle(): void {
         // Note: Ideally we should use a search/autocomplete here instead of loading all cattle
-        this.cattleService.getCattle().subscribe({
+        this.cattleService.getAllCattle().subscribe({
             next: (response) => this.cattleList = response.cattle,
             error: (err) => console.error('Error loading cattle', err)
         });

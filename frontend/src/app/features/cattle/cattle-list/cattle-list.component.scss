@@ -1,0 +1,44 @@
+.filters-card {
+    margin-bottom: 20px;
+    padding: 16px;
+
+    .search-field {
+        width: 300px;
+        margin-right: 16px;
+    }
+}
+
+.table-card {
+    overflow: hidden;
+}
+
+.cattle-table {
+    width: 100%;
+}
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+
+    &.active {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    &.sold {
+        background-color: #e3f2fd;
+        color: #1565c0;
+    }
+
+    &.deceased {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+
+    &.culled {
+        background-color: #fff3e0;
+        color: #ef6c00;
+    }
+}
