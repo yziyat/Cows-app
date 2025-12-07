@@ -19,6 +19,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ProtocolListComponent } from './protocol-list/protocol-list.component';
 import { ProtocolFormDialogComponent } from './protocol-form-dialog/protocol-form-dialog.component';
@@ -53,7 +54,8 @@ const routes: Routes = [
         MatSortModule,
         MatMenuModule,
         MatProgressSpinnerModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatSnackBarModule
     ]
 })
 export class ProtocolsModule { }
