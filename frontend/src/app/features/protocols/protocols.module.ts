@@ -23,7 +23,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ProtocolListComponent } from './protocol-list/protocol-list.component';
 import { ProtocolFormDialogComponent } from './protocol-form-dialog/protocol-form-dialog.component';
-import { BulkProtocolAssignmentDialogComponent } from './bulk-protocol-assignment-dialog/bulk-protocol-assignment-dialog.component';
+// import { BulkProtocolAssignmentDialogComponent } from './bulk-protocol-assignment-dialog/bulk-protocol-assignment-dialog.component';
 import { AuthGuard } from '../../core/guards/auth.guard';
 
 const routes: Routes = [
@@ -33,8 +33,8 @@ const routes: Routes = [
 @NgModule({
     declarations: [
         ProtocolListComponent,
-        ProtocolFormDialogComponent,
-        BulkProtocolAssignmentDialogComponent
+        ProtocolFormDialogComponent
+        // BulkProtocolAssignmentDialogComponent
     ],
     imports: [
         CommonModule,
